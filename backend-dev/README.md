@@ -21,4 +21,4 @@
 ## Environment variables
 
 - `GEMINI_API_KEY` (required): API key for Gemini text generation.
-- `GEMINI_MODEL` (optional): Model name, defaults to `gemini-1.5-flash`.
+- `GEMINI_MODEL` (optional): Model name, defaults to `gemini-2.0-flash-exp`.
