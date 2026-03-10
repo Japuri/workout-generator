@@ -17,3 +17,8 @@
 **AI chatbot**
 
 - `POST /api/v1/chatbot/`
+
+## Environment variables
+
+- `GEMINI_API_KEY` (required): API key for Gemini text generation.
+- `GEMINI_MODEL` (optional): Model name, defaults to `gemini-1.5-flash`.

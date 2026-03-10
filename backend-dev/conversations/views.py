@@ -8,6 +8,12 @@ from .serializers import ConversationSerializer, MessageSerializer
 import requests
 import os
 
+
+WORKOUT_SYSTEM_INSTRUCTION = (
+    "You are a workout assistant. Provide quick, bodyweight-only home workout routines. "
+    "Refuse to provide medical advice, diet plans, or gym-equipment-based exercises."
+)
+
 class ConversationListView(generics.ListAPIView):
     serializer_class = ConversationSerializer
     permission_classes = [IsAuthenticated]
@@ -33,10 +39,6 @@ class ChatView(APIView):
         if not user_message:
             return Response({'error': 'Message is required.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        forbidden_keywords = ['medical', 'diet', 'nutrition', 'gym', 'equipment']
-        if any(word in user_message.lower() for word in forbidden_keywords):
-            return Response({'error': 'Cannot provide medical advice, diet plans, or gym-equipment-based exercises.'}, status=status.HTTP_403_FORBIDDEN)
-
         # Get or create conversation
         if conversation_id:
             try:
@@ -52,14 +54,41 @@ class ChatView(APIView):
         # Save user message
         Message.objects.create(conversation=conversation, role='user', content=user_message)
 
-        # Call chatbot API
+        # Call Gemini API
         api_key = os.getenv('GEMINI_API_KEY')
-        url = 'https://api.gemini.com/v1/chatbot'
-        payload = {'message': user_message, 'key': api_key}
+        model_name = os.getenv('GEMINI_MODEL', 'gemini-1.5-flash')
+
+        if not api_key:
+            return Response({'error': 'Missing GEMINI_API_KEY configuration.'}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+        url = f'https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={api_key}'
+
+        history = []
+        for message in conversation.messages.order_by('created_at'):
+            history.append({
+                'role': 'model' if message.role == 'assistant' else 'user',
+                'parts': [{'text': message.content}],
+            })
+
+        payload = {
+            'system_instruction': {
+                'parts': [{'text': WORKOUT_SYSTEM_INSTRUCTION}],
+            },
+            'contents': history,
+            'generationConfig': {
+                'temperature': 0.7,
+            },
+        }
+
         try:
-            bot_response = requests.post(url, json=payload)
+            bot_response = requests.post(url, json=payload, timeout=20)
             if bot_response.status_code == 200:
-                bot_content = bot_response.json().get('reply', '')
+                data = bot_response.json()
+                candidate = (data.get('candidates') or [{}])[0]
+                parts = candidate.get('content', {}).get('parts', [])
+                bot_content = ''.join(part.get('text', '') for part in parts).strip()
+                if not bot_content:
+                    bot_content = 'Sorry, I could not generate a response right now.'
             else:
                 bot_content = 'Sorry, I could not get a response right now.'
         except Exception:
