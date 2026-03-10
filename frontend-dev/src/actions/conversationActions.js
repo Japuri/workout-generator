@@ -21,13 +21,13 @@ const getAuthHeader = (getState) => {
   }
 }
 
-export const createMessage = (message) => async (dispatch, getState) => {
+export const createMessage = (message, conversationId = null) => async (dispatch, getState) => {
   try {
     dispatch({ type: CONVERSATION_CREATE_REQUEST })
 
     const { data } = await axios.post(
       '/api/v1/conversation/',
-      { message },
+      { message, conversation_id: conversationId },
       getAuthHeader(getState)
     )
 
