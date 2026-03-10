@@ -1,11 +1,20 @@
+
 # Workout Generator Backend
 
-Django REST backend with three apps:
-- base_app (main url route /api/v1)
-- conversations (Conversation and Message models, serializers, views)
-- authentication (Register and JWT signin serializers and views)
+## API Endpoints
 
-Ready for frontend integration.
+**Authentication**
+
+- `POST /api/v1/auth/signup/` — Register user
+- `POST /api/v1/auth/signin/` — Sign in (JWT token)
+
+**Conversations**
+
+- `POST /api/v1/conversation/` — Create a message in a conversation
+- `GET /api/v1/conversations/` — List all conversations
+- `GET /api/v1/conversations/<id>/` — Get details of a conversation
+
+All endpoints are ready for frontend integration.
 
 Here are the backend endpoints:
 
