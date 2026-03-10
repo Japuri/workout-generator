@@ -142,7 +142,7 @@ The AI assistant is configured to only discuss bodyweight home workouts. It will
 | Variable | Description |
 |----------|-------------|
 | `GEMINI_API_KEY` | Your Google Gemini API key |
-| `GEMINI_MODEL` | Gemini model name (e.g. `gemini-2.0-flash-exp`) |
+| `GEMINI_MODEL` | Gemini model name (e.g. `gemini-2.5-flash`) |
 
 > ⚠️ Never commit your `.env` file. It is already listed in `.gitignore`.
 
