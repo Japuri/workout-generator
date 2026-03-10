@@ -29,7 +29,7 @@ class ChatbotAPIView(APIView):
         if any(word in user_message.lower() for word in forbidden_keywords):
             return Response({'error': 'Cannot provide medical advice, diet plans, or gym-equipment-based exercises.'}, status=status.HTTP_403_FORBIDDEN)
 
-        api_key = 'YOUR_GEMINI_API_KEY'
+        api_key = 'AIzaSyAT9AHUmkIUrAqMCmlLCNyAFliHLy8jrFI'
         url = 'https://api.gemini.com/v1/chatbot'
         payload = {
             'message': user_message,
