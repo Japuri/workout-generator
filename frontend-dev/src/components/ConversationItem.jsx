@@ -4,11 +4,11 @@ import { useNavigate, useParams } from 'react-router-dom'
 function ConversationItem({ conversation }) {
   const navigate = useNavigate()
   const { id } = useParams()
-  const isActive = id === String(conversation._id)
+  const isActive = id === String(conversation.id)
 
   return (
     <div
-      onClick={() => navigate(`/conversation/${conversation._id}`)}
+      onClick={() => navigate(`/conversation/${conversation.id}`)}
       style={{
         padding: '0.75rem 1rem',
         borderRadius: '6px',

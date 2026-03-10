@@ -16,7 +16,7 @@ const getAuthHeader = (getState) => {
   return {
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${userInfo.token}`,
+      Authorization: `Bearer ${userInfo.access}`,
     },
   }
 }

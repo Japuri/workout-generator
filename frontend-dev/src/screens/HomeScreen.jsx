@@ -30,7 +30,7 @@ function HomeScreen() {
 
   useEffect(() => {
     if (created && !id) {
-      navigate(`/conversation/${created._id}`)
+      navigate(`/conversation/${created.id}`)
     }
   }, [created, navigate, id])
 
@@ -56,7 +56,7 @@ function HomeScreen() {
         </button>
         <div style={styles.convList}>
           {conversations && conversations.map((conv) => (
-            <ConversationItem key={conv._id} conversation={conv} />
+            <ConversationItem key={conv.id} conversation={conv} />
           ))}
         </div>
         <div style={styles.sidebarFooter}>
