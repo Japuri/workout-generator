@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import { listConversations, createMessage, getConversationDetail } from '../actions/conversationActions'
+import { CONVERSATION_CREATE_RESET } from '../constants/conversationConstants'
+import { CONVERSATION_DETAIL_SUCCESS } from '../constants/conversationConstants'
 import { signout } from '../actions/authActions'
 import ConversationItem from '../components/ConversationItem'
 import EmptyState from '../components/EmptyState'
@@ -51,7 +53,11 @@ function HomeScreen() {
     <div style={styles.layout}>
       {/* Sidebar */}
       <div style={styles.sidebar}>
-        <button style={styles.newChatBtn} onClick={() => navigate('/')}>
+        <button style={styles.newChatBtn} onClick={() => {
+          dispatch({ type: CONVERSATION_CREATE_RESET })
+          dispatch({ type: 'CONVERSATION_DETAIL_REQUEST' })
+          navigate('/')
+        }}>
           + New Chat
         </button>
         <div style={styles.convList}>

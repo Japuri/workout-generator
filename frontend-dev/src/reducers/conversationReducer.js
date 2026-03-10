@@ -2,6 +2,7 @@ import {
   CONVERSATION_CREATE_REQUEST,
   CONVERSATION_CREATE_SUCCESS,
   CONVERSATION_CREATE_FAIL,
+  CONVERSATION_CREATE_RESET,
   CONVERSATIONS_LIST_REQUEST,
   CONVERSATIONS_LIST_SUCCESS,
   CONVERSATIONS_LIST_FAIL,
@@ -20,6 +21,9 @@ export const conversationCreateReducer = (state = {}, action) => {
 
     case CONVERSATION_CREATE_FAIL:
       return { loading: false, error: action.payload }
+
+    case CONVERSATION_CREATE_RESET:
+      return {}
 
     default:
       return state
