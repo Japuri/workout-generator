@@ -56,7 +56,7 @@ class ChatView(APIView):
 
         # Call Gemini API
         api_key = os.getenv('GEMINI_API_KEY')
-        model_name = os.getenv('GEMINI_MODEL')
+        model_name = os.getenv('GEMINI_MODEL', 'gemini-2.5-flash')
 
         if not api_key:
             return Response({'error': 'Missing GEMINI_API_KEY configuration.'}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
