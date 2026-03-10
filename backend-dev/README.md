@@ -14,3 +14,6 @@
 - `GET /api/v1/conversations/` — List all conversations
 - `GET /api/v1/conversations/<id>/` — Get details of a conversation
 
+**AI chatbot**
+
+- `POST /api/v1/chatbot/`
