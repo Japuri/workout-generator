@@ -48,6 +48,7 @@ export const conversationDetailReducer = (state = { conversation: {} }, action) 
       return { loading: true, conversation: {} }
 
     case CONVERSATION_DETAIL_SUCCESS:
+    case CONVERSATION_CREATE_SUCCESS:
       return { loading: false, conversation: action.payload }
 
     case CONVERSATION_DETAIL_FAIL:

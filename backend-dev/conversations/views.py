@@ -56,7 +56,7 @@ class ChatView(APIView):
 
         # Call Gemini API
         api_key = os.getenv('GEMINI_API_KEY')
-        model_name = os.getenv('GEMINI_MODEL', 'gemini-2.0-flash-exp')
+        model_name = os.getenv('GEMINI_MODEL')
 
         if not api_key:
             return Response({'error': 'Missing GEMINI_API_KEY configuration.'}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
@@ -86,9 +86,14 @@ class ChatView(APIView):
                 data = bot_response.json()
                 candidate = (data.get('candidates') or [{}])[0]
                 parts = candidate.get('content', {}).get('parts', [])
-                bot_content = ''.join(part.get('text', '') for part in parts).strip()
-                if not bot_content:
-                    bot_content = 'Sorry, I could not generate a response right now.'
+                raw = ''.join(part.get('text', '') for part in parts).strip()
+                # Remove horizontal rules, bold markers, bullet asterisks, and excess blank lines
+                import re
+                cleaned = re.sub(r'---+', '', raw)
+                cleaned = re.sub(r'\*\*(.*?)\*\*', r'\1', cleaned)
+                cleaned = re.sub(r'^\s*\*\s+', '• ', cleaned, flags=re.MULTILINE)
+                cleaned = re.sub(r'\n{3,}', '\n\n', cleaned)
+                bot_content = cleaned.strip() or 'Sorry, I could not generate a response right now.'
             else:
                 bot_content = 'Sorry, I could not get a response right now.'
         except Exception:
