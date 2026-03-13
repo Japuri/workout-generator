@@ -112,6 +112,8 @@ The backend runs at `http://localhost:8000`.
 cd frontend-dev
 npm install
 npm start
+account: admin@gmail.com
+password:123
 ```
 
 The frontend runs at `http://localhost:3000` and proxies API requests to `http://localhost:8000`.
